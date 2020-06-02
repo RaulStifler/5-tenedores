@@ -11,7 +11,7 @@ const AccountStack = () => {
         name="account"
         component={Account}
         options={{
-          title: "Perfil"
+          title: "Mi cuenta"
         }}
       />
     </Stack.Navigator>
