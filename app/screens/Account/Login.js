@@ -1,12 +1,57 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image } from 'react-native';
+import { Divider } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 
-const Login = () => (
-  <View>
-    <Text>Login</Text>
-  </View>
-)
+const Login = () => {
+  const navigation = useNavigation();
+  return (
+    <ScrollView>
+      <Image
+        source={ require('../../../assets/img/5-tenedores.png') }
+        resizeMode="contain"
+        style={styles.logo}
+      />
+      <View style={styles.formContainer}>
+        <Text style={styles.textRegister}>
+          ¿Aún no tienes una cuenta?{" "}
+          <Text
+            style={styles.linkRegister}
+            onPress={ () => navigation.navigate("register") }
+          >
+            Registrate
+          </Text>
+        </Text>
+      </View>
+      <Divider style={styles.divider} />
+      <Text>Social Login</Text>
+    </ScrollView>
+  )
+}
 
 export default Login;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  logo: {
+    width: "100%",
+    height: 150,
+    marginTop: 20,
+  },
+  formContainer: {
+    marginRight: 40,
+    marginLeft: 40,
+  },
+  textRegister: {
+    marginTop: 15,
+    marginRight: 10,
+    marginRight: 10,
+  },
+  linkRegister: {
+    color: "#00A680",
+    fontWeight: 'bold',
+  },
+  divider: {
+    backgroundColor: "#00A680",
+    margin: 40,
+  },
+});
