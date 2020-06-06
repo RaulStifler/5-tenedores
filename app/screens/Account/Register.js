@@ -1,18 +1,19 @@
 import React from 'react'
 import { StyleSheet, Text, View, ScrollView, Image } from 'react-native'
+import RegisterForm from '../../components/Account/RegisterForm'
 
 const Register = () => {
   return (
-    <View>
+    <ScrollView>
       <Image
         source={ require("../../../assets/img/5-tenedores.png") }
         resizeMode="contain"
         style={styles.logo}
       />
       <View style={styles.viewForm}>
-        <Text>Register form</Text>
+        <RegisterForm />
       </View>
-    </View>
+    </ScrollView>
   )
 }
 
