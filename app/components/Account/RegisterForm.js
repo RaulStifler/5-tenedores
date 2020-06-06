@@ -1,52 +1,58 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Input, Icon, Button } from 'react-native-elements';
 
 
-const RegisterForm = () => (
-  <View style={styles.formContainer}>
-    <Input
-      placeholder="Correo electronico"
-      containerStyle={styles.inputForm}
-      rightIcon={
-        <Icon
-          type="material-community"
-          name="at"
-          iconStyle={styles.iconRight}
-        />
-      }
-    />
-    <Input
-      placeholder="Contraseña"
-      containerStyle={styles.inputForm}
-      secureTextEntry
-      rightIcon={
-        <Icon
-          type="material-community"
-          name="eye-outline"
-          iconStyle={styles.iconRight}
-        />
-      }
-    />
-    <Input
-      placeholder="Repetir contraseña"
-      containerStyle={styles.inputForm}
-      secureTextEntry
-      rightIcon={
-        <Icon
-          type="material-community"
-          name="eye-outline"
-          iconStyle={styles.iconRight}
-        />
-      }
-    />
-    <Button
-      title="Unirte"
-      containerStyle={styles.buttonContainer}
-      buttonStyle={styles.buttonRegister}
-    />
-  </View>
-)
+const RegisterForm = () => {
+  const [hidePassword, setHidePassword] = useState(true)
+  const [hideRepeatPassword, setHideRepeatPassword] = useState(true)
+  return (
+    <View style={styles.formContainer}>
+      <Input
+        placeholder="Correo electronico"
+        containerStyle={styles.inputForm}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name="at"
+            iconStyle={styles.iconRight}
+          />
+        }
+      />
+      <Input
+        placeholder="Contraseña"
+        containerStyle={styles.inputForm}
+        secureTextEntry={hidePassword}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name={hidePassword ? "eye-outline" : "eye-off-outline"}
+            iconStyle={styles.iconRight}
+            onPress={ () => setHidePassword(!hidePassword)}
+          />
+        }
+      />
+      <Input
+        placeholder="Repetir contraseña"
+        containerStyle={styles.inputForm}
+        secureTextEntry={hideRepeatPassword}
+        rightIcon={
+          <Icon
+            type="material-community"
+            name={hideRepeatPassword ? "eye-outline" : "eye-off-outline"}
+            iconStyle={styles.iconRight}
+            onPress={ () => setHideRepeatPassword(!hideRepeatPassword)}
+          />
+        }
+      />
+      <Button
+        title="Unirte"
+        containerStyle={styles.buttonContainer}
+        buttonStyle={styles.buttonRegister}
+      />
+    </View>
+  )
+}
 
 export default RegisterForm
 
