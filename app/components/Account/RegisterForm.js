@@ -6,11 +6,22 @@ import { Input, Icon, Button } from 'react-native-elements';
 const RegisterForm = () => {
   const [hidePassword, setHidePassword] = useState(true)
   const [hideRepeatPassword, setHideRepeatPassword] = useState(true)
+  const [formData, setFormData] = useState({
+    email: '',
+    pass: '',
+    rePass: '',
+  })
+
+  const onChange = (e, type) => {
+    setFormData({...formData, [type]: e.nativeEvent.text})
+  }
+  
   return (
     <View style={styles.formContainer}>
       <Input
         placeholder="Correo electronico"
         containerStyle={styles.inputForm}
+        onChange={ (e) => onChange(e, 'email')}
         rightIcon={
           <Icon
             type="material-community"
@@ -23,6 +34,7 @@ const RegisterForm = () => {
         placeholder="Contraseña"
         containerStyle={styles.inputForm}
         secureTextEntry={hidePassword}
+        onChange={ (e) => onChange(e, 'pass')}
         rightIcon={
           <Icon
             type="material-community"
@@ -36,6 +48,7 @@ const RegisterForm = () => {
         placeholder="Repetir contraseña"
         containerStyle={styles.inputForm}
         secureTextEntry={hideRepeatPassword}
+        onChange={ (e) => onChange(e, 'rePass')}
         rightIcon={
           <Icon
             type="material-community"
@@ -49,6 +62,7 @@ const RegisterForm = () => {
         title="Unirte"
         containerStyle={styles.buttonContainer}
         buttonStyle={styles.buttonRegister}
+        onPress={() => console.log(formData)}
       />
     </View>
   )
