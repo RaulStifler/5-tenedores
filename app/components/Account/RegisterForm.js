@@ -4,7 +4,9 @@ import { Input, Icon, Button } from 'react-native-elements';
 import { validateEmail } from '../../utils/validations';
 import { size, isEmpty } from 'lodash';
 
-const RegisterForm = () => {
+const RegisterForm = ({
+  toastRef,
+}) => {
   const [hidePassword, setHidePassword] = useState(true)
   const [hideRepeatPassword, setHideRepeatPassword] = useState(true)
   const [formData, setFormData] = useState({
@@ -15,13 +17,13 @@ const RegisterForm = () => {
 
   const onSubmit = () => {
     if (isEmpty(formData.email) || isEmpty(formData.pass) || isEmpty(formData.rePass)) {
-      console.log('Completa todos los campos')
+      toastRef.current.show('Completa todos los campos');
     } else if (!validateEmail(formData.email)) {
-        console.log('Email incorrecto');
+      toastRef.current.show('Email incorrecto');
     } else if (formData.pass !== formData.rePass){
-      console.log('Las contraseñas no coinciden');
+      toastRef.current.show('Las contraseñas no coinciden');
     } else if (size(formData.pass) > 5 && size(formData) < 17) {
-      console.log('Longitud de contraseña no valido')
+      toastRef.current.show('Longitud de contraseña no valido');
     } else {
       console.log('Ok')
     }
