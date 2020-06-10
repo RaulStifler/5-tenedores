@@ -3,17 +3,22 @@ import { StyleSheet, Text, View } from 'react-native'
 import { Input, Icon, Button } from 'react-native-elements';
 import { validateEmail } from '../../utils/validations';
 import { size, isEmpty } from 'lodash';
+import * as firebase from 'firebase';
+import { useNavigation } from '@react-navigation/native';
+import Loading from '../Loading';
 
 const RegisterForm = ({
   toastRef,
 }) => {
   const [hidePassword, setHidePassword] = useState(true)
+  const [registrandoUsuario, setRegistrandoUsuario] = useState(false)
   const [hideRepeatPassword, setHideRepeatPassword] = useState(true)
   const [formData, setFormData] = useState({
     email: '',
     pass: '',
     rePass: '',
   })
+  const navigation = useNavigation();
 
   const onSubmit = () => {
     if (isEmpty(formData.email) || isEmpty(formData.pass) || isEmpty(formData.rePass)) {
@@ -22,10 +27,19 @@ const RegisterForm = ({
       toastRef.current.show('Email incorrecto');
     } else if (formData.pass !== formData.rePass){
       toastRef.current.show('Las contraseñas no coinciden');
-    } else if (size(formData.pass) > 5 && size(formData) < 17) {
+    } else if (size(formData.pass) < 6 || size(formData) > 16) {
       toastRef.current.show('Longitud de contraseña no valido');
     } else {
-      console.log('Ok')
+      setRegistrandoUsuario(true);
+      firebase.auth().createUserWithEmailAndPassword(formData.email, formData.pass)
+        .then( () => {
+          setRegistrandoUsuario(false);
+          navigation.navigate('account')
+        })
+        .catch( () => {
+          setRegistrandoUsuario(false);
+          toastRef.current.show('El email ya esta en uso')
+        })
     }
   }
   
@@ -81,6 +95,7 @@ const RegisterForm = ({
         buttonStyle={styles.buttonRegister}
         onPress={onSubmit}
       />
+      <Loading isVisible={registrandoUsuario} text="Registrando usuario" />
     </View>
   )
 }
