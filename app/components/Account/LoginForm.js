@@ -2,13 +2,19 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Input, Icon, Button } from 'react-native-elements';
 import { isEmpty } from 'lodash';
+import { useNavigation } from '@react-navigation/native';
 import { validateEmail } from '../../utils/validations';
+import * as firebase from 'firebase';
+import Loading from '../Loading';
 
 const LoginForm = ({
   toastRef,
 }) => {
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({email: "", pass: ""});
+
+  const navigation = useNavigation();
 
   const onChange = (e, type) => {
     setFormData({...formData, [type]: e.nativeEvent.text})
@@ -20,7 +26,16 @@ const LoginForm = ({
     } else if (!validateEmail(formData.email)) {
       toastRef.current.show('Formato de email incorrecto');
     } else {
-      console.log('ok :D')
+      setLoading(true);
+      firebase.auth().signInWithEmailAndPassword(formData.email, formData.pass)
+        .then(() => {
+          setLoading(false);
+          navigation.navigate('account');
+        })
+        .catch(() => {
+          setLoading(false);
+          toastRef.current.show('Error al iniciar sesión');
+        })
     }
   }
   
@@ -57,6 +72,10 @@ const LoginForm = ({
         containerStyle={styles.btnContainer}
         buttonStyle={styles.btn}
         onPress={onSubmit}
+      />
+      <Loading
+        text="Iniciando sesión"
+        isVisible={loading}
       />
     </View>
   )
