@@ -1,9 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import AvatarDefault from '../../../assets/img/avatar-default.jpg'
 
 const InfoUser = ({
-  user,
+  user: {
+    displayName,
+    photoURL,
+    email,
+  },
 }) => {
   return (
     <View style={styles.userInfo}>
@@ -12,13 +17,14 @@ const InfoUser = ({
         size="large"
         showAccessory
         containerStyle={styles.containerAvatar}
+        source={ photoURL ? { uri: photoURL } : AvatarDefault}
       />
       <View>
         <Text style={styles.nameLabel}>
-          Raul Stifler
+          {displayName ? displayName : 'Sin nombre'}
         </Text>
         <Text>
-          raulstifler25@gmail.com
+          {email ? email : 'Social login'}
         </Text>
       </View>
     </View>

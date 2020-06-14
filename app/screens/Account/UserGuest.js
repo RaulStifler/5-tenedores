@@ -12,7 +12,7 @@ const UserGuest = () => {
         source={ require('../../../assets/img/original.jpg') }
         resizeMode="contain"
       />
-      <Text style={styles.title}>Consulta tu perfil de 5 Tenedores</Text>
+      <Text style={styles.title}>Consulta tu perfil en la plataforma</Text>
       <Text style={styles.description}>
         ¿Comó describirías tu mejor restaurante? Busca y visualiza los mejores restaurantes de una forma sencilla, vota cual te ha gustado más y comenta como ha sido tu experiencia.
       </Text>
