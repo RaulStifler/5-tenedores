@@ -15,13 +15,13 @@ const UserLogged = () => {
   useEffect(() => {
     (async () => {
       const user = await firebase.auth().currentUser;
-      setLoggedUser({user});
+      setLoggedUser(user);
     })()
   }, [])
 
   return (
     <View style={styles.userInfo}>
-      { loggedUser && <InfoUser />}
+      { loggedUser && <InfoUser user={loggedUser} />}
       <Text>Account option</Text>
       <Button
         title="Cerrar sesión"
