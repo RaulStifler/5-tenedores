@@ -21,7 +21,7 @@ const UserLogged = () => {
 
   return (
     <View style={styles.userInfo}>
-      { loggedUser && <InfoUser user={loggedUser} />}
+      { loggedUser && <InfoUser user={loggedUser} toastRef={toastRef} />}
       <Text>Account option</Text>
       <Button
         title="Cerrar sesión"

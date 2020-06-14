@@ -1,23 +1,71 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
-import AvatarDefault from '../../../assets/img/avatar-default.jpg'
+import AvatarDefault from '../../../assets/img/avatar-default.jpg';
+import * as firebase from 'firebase';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 
 const InfoUser = ({
   user: {
+    uid,
     displayName,
     photoURL,
     email,
   },
+  toastRef,
 }) => {
+
+  const changeAvatar = async () => {
+    const { status, permissions } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    if (status === 'denied') {
+      toastRef.current.show('Debes aceptar permisos');
+    } else {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: [1, 1],
+      });
+      if (result.cancelled) {
+        toastRef.current.show('Operacion cancelada');
+      } else {
+        uploadImage(result.uri)
+          .then(() => updatePhotoUrl())
+          .catch(() => toastRef.current.show('Error al subir avatar'));
+      }
+    }
+  }
+  
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    const ref = firebase.storage().ref().child(`avatar/${uid}`);
+    return ref.put(blob)
+  }
+
+  const updatePhotoUrl = () => {
+    firebase.storage().ref(`avatar/${uid}`).getDownloadURL()
+      .then(async (response) => {
+        const update = {
+          photoURL: response,
+        };
+        await firebase.auth().currentUser.updateProfile(update)
+        toastRef.current.show('Avatar actualizado')
+      })
+  }
+
   return (
     <View style={styles.userInfo}>
       <Avatar
         rounded
         size="large"
         showAccessory
+        onAccessoryPress={changeAvatar}
         containerStyle={styles.containerAvatar}
-        source={ photoURL ? { uri: photoURL } : AvatarDefault}
+        source={
+          photoURL
+            ? { uri: photoURL }
+            : require('../../../assets/img/avatar-default.jpg')
+        }
       />
       <View>
         <Text style={styles.nameLabel}>
