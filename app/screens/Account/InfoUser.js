@@ -14,6 +14,8 @@ const InfoUser = ({
     email,
   },
   toastRef,
+  setShowLoading,
+  setTextLoading,
 }) => {
 
   const changeAvatar = async () => {
@@ -36,6 +38,8 @@ const InfoUser = ({
   }
   
   const uploadImage = async (uri) => {
+    setTextLoading('Subiendo imagen');
+    setShowLoading(true);
     const response = await fetch(uri);
     const blob = await response.blob();
     const ref = firebase.storage().ref().child(`avatar/${uid}`);
@@ -49,8 +53,12 @@ const InfoUser = ({
           photoURL: response,
         };
         await firebase.auth().currentUser.updateProfile(update)
-        toastRef.current.show('Avatar actualizado')
+        setShowLoading(false);
       })
+      .catch((error) => {
+        setShowLoading(false);
+        toastRef.current.show(error);
+      });
   }
 
   return (

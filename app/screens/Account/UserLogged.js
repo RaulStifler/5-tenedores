@@ -7,7 +7,7 @@ import Loading from '../../components/Loading';
 import InfoUser from './InfoUser';
 
 const UserLogged = () => {
-  const [showLoading, setshowLoading] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
   const [textLoading, setTextLoading] = useState(null);
   const [loggedUser, setLoggedUser] = useState(null);
   const toastRef = useRef();
@@ -21,7 +21,15 @@ const UserLogged = () => {
 
   return (
     <View style={styles.userInfo}>
-      { loggedUser && <InfoUser user={loggedUser} toastRef={toastRef} />}
+      {
+        loggedUser
+        &&  <InfoUser
+              user={loggedUser}
+              toastRef={toastRef}
+              setTextLoading={setTextLoading}
+              setShowLoading={setShowLoading}
+            />
+      }
       <Text>Account option</Text>
       <Button
         title="Cerrar sesión"
